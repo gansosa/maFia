@@ -177,4 +177,107 @@
         <h2 id="player-title" style="color: #ffffff; font-size: 22px;">მოთამაშე 1</h2>
         
         <div class="card-box">
-            <button class
+            <button class="btn btn-primary" id="reveal-btn" onclick="revealRole()">როლის ნახვა</button>
+            <div id="role-content" class="hidden">
+                <div class="role-icon-display" id="icon-display"></div>
+                <div class="role-title-display" id="role-display"></div>
+            </div>
+        </div>
+
+        <button class="btn btn-success hidden" id="next-btn" onclick="nextPlayer()">შემდეგი მოთამაშე</button>
+    </div>
+</div>
+
+<script>
+    // როლები თავისი სიმბოლოებით/ხატულებით
+    const rolesData = [
+        { name: "დონი", icon: "🕶️", listLabel: "🕶️ დონი" },
+        { name: "მაფია", icon: "🕶️", listLabel: "🕶️ მაფია 1" },
+        { name: "მაფია", icon: "🕶️", listLabel: "🕶️ მაფია 2" },
+        { name: "იაკუძა", icon: "⚔️", listLabel: "⚔️ იაკუძა" },
+        { name: "შოგუნი", icon: "👑", listLabel: "👑 შოგუნი" },
+        { name: "დეტექტივი", icon: "🔍", listLabel: "🔍 დეტექტივი" },
+        { name: "ექიმი", icon: "✚", listLabel: "✚ ექიმი" },
+        { name: "მანიაკი", icon: "🔪", listLabel: "🔪 მანიაკი" },
+        { name: "მოქალაქე", icon: "❤️", listLabel: "❤️ მოქალაქე" },
+        { name: "მოქალაქე", icon: "❤️", listLabel: "❤️ მოქალაქე 1" },
+        { name: "მოქალაქე", icon: "❤️", listLabel: "❤️ მოქალაქე 2" },
+        { name: "მოქალაქე", icon: "❤️", listLabel: "❤️ მოქალაქე 3" },
+        { name: "მოქალაქე", icon: "❤️", listLabel: "❤️ მოქალაქე 4" },
+        { name: "მოქალაქე", icon: "❤️", listLabel: "❤️ მოქალაქე 5" }
+    ];
+
+    let assignedRoles = [];
+    let currentIndex = 0;
+
+    // ჩექბოქსების აგება
+    const listContainer = document.getElementById('roles-list');
+    rolesData.forEach((roleObj, index) => {
+        const label = document.createElement('label');
+        label.className = 'role-option';
+        label.innerHTML = `
+            <input type="checkbox" value="${index}" onchange="updateCount()">
+            ${roleObj.listLabel}
+        `;
+        listContainer.appendChild(label);
+    });
+
+    function updateCount() {
+        const checkedBoxes = document.querySelectorAll('#roles-list input[type="checkbox"]:checked');
+        const count = checkedBoxes.length;
+        document.getElementById('selected-count').innerText = count;
+        document.getElementById('start-btn').disabled = count === 0;
+    }
+
+    function startGame() {
+        const checkedBoxes = document.querySelectorAll('#roles-list input[type="checkbox"]:checked');
+        let selectedRoles = Array.from(checkedBoxes).map(cb => rolesData[cb.value]);
+
+        // არევა (Fisher-Yates)
+        for (let i = selectedRoles.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [selectedRoles[i], selectedRoles[j]] = [selectedRoles[j], selectedRoles[i]];
+        }
+
+        assignedRoles = selectedRoles;
+        currentIndex = 0;
+
+        document.getElementById('setup-screen').classList.add('hidden');
+        document.getElementById('game-screen').classList.remove('hidden');
+        
+        showPlayerStep();
+    }
+
+    function showPlayerStep() {
+        document.getElementById('player-title').innerText = `მოთამაშე ${currentIndex + 1}`;
+        document.getElementById('role-content').classList.add('hidden');
+        document.getElementById('reveal-btn').classList.remove('hidden');
+        document.getElementById('next-btn').classList.add('hidden');
+    }
+
+    function revealRole() {
+        const currentRole = assignedRoles[currentIndex];
+        document.getElementById('role-display').innerText = currentRole.name;
+        document.getElementById('icon-display').innerText = currentRole.icon;
+        
+        document.getElementById('role-content').classList.remove('hidden');
+        document.getElementById('reveal-btn').classList.add('hidden');
+        
+        setTimeout(() => {
+            document.getElementById('next-btn').classList.remove('hidden');
+        }, 300);
+    }
+
+    function nextPlayer() {
+        currentIndex++;
+        if (currentIndex < assignedRoles.length) {
+            showPlayerStep();
+        } else {
+            alert('ყველა მოთამაშემ გაიგო თავისი როლი! თამაში იწყება.');
+            location.reload();
+        }
+    }
+</script>
+
+</body>
+</html>
