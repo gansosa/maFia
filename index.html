@@ -3,8 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>მაფიის აპლიკაცია</title>
+    <title>მაფია - როლების განაწილება</title>
     <style>
+        :root {
+            --bg-color: #0c0c0e;
+            --container-bg: #16161b;
+            --border-color: #262630;
+            --accent-red: #ff334b;
+            --accent-red-glow: rgba(255, 51, 75, 0.3);
+            --accent-gold: #ffc107;
+            --text-main: #f0f0f5;
+            --text-secondary: #9999a6;
+            --card-bg: #1f1f26;
+            --card-selected-bg: #2a161c;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -13,8 +26,8 @@
         }
 
         body {
-            background-color: #0f0f12;
-            color: #ffffff;
+            background-color: var(--bg-color);
+            color: var(--text-main);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -24,25 +37,26 @@
 
         .app-container {
             width: 100%;
-            max-width: 450px;
-            background: #18181c;
-            border-radius: 16px;
+            max-width: 460px;
+            background: var(--container-bg);
+            border-radius: 20px;
             padding: 24px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            border: 1px solid #2a2a30;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--border-color);
             text-align: center;
         }
 
         h1 {
-            color: #e50914;
-            font-size: 28px;
-            margin-bottom: 8px;
+            color: var(--accent-red);
+            font-size: 30px;
+            margin-bottom: 6px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
+            text-shadow: 0 0 15px var(--accent-red-glow);
         }
 
         p.subtitle {
-            color: #a0a0ab;
+            color: var(--text-secondary);
             font-size: 14px;
             margin-bottom: 20px;
         }
@@ -53,41 +67,66 @@
             gap: 10px;
             margin-bottom: 20px;
             text-align: left;
+            max-height: 380px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        /* Custom Scrollbar */
+        .roles-grid::-webkit-scrollbar {
+            width: 5px;
+        }
+        .roles-grid::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 10px;
         }
 
         .role-option {
-            background: #222228;
-            padding: 12px;
-            border-radius: 8px;
+            background: var(--card-bg);
+            padding: 12px 14px;
+            border-radius: 12px;
             font-size: 14px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             cursor: pointer;
-            border: 1px solid #33333d;
-            transition: 0.2s;
+            border: 1px solid var(--border-color);
+            transition: all 0.25s ease;
+        }
+
+        .role-option:hover {
+            border-color: #444455;
+            transform: translateY(-1px);
         }
 
         .role-option:has(input:checked) {
-            border-color: #e50914;
-            background: #2a1b20;
+            border-color: var(--accent-red);
+            background: var(--card-selected-bg);
+            box-shadow: 0 0 10px rgba(255, 51, 75, 0.15);
         }
 
         .role-option input {
-            accent-color: #e50914;
+            accent-color: var(--accent-red);
             width: 16px;
             height: 16px;
             cursor: pointer;
         }
 
+        .role-label-text {
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
         .status-text {
             font-size: 15px;
-            color: #d1d1d6;
-            margin-bottom: 15px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
         }
 
         .status-text span {
-            color: #ffd700;
+            color: var(--accent-gold);
             font-weight: bold;
         }
 
@@ -95,66 +134,75 @@
             width: 100%;
             padding: 16px;
             border: none;
-            border-radius: 10px;
-            font-size: 16px;
+            border-radius: 12px;
+            font-size: 15px;
             font-weight: bold;
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.2s ease;
             text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .btn-primary {
-            background: #e50914;
+            background: var(--accent-red);
             color: #fff;
+            box-shadow: 0 5px 20px var(--accent-red-glow);
         }
 
         .btn-primary:hover {
-            background: #f40612;
+            background: #ff1935;
+            box-shadow: 0 8px 25px rgba(255, 51, 75, 0.5);
+            transform: translateY(-2px);
         }
 
         .btn-primary:disabled {
-            background: #3a3a42;
-            color: #777;
+            background: #23232c;
+            color: #555566;
             cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
         }
 
         .btn-success {
-            background: #28a745;
+            background: #00c853;
             color: #fff;
             margin-top: 15px;
+            box-shadow: 0 5px 20px rgba(0, 200, 83, 0.3);
         }
 
         .btn-success:hover {
-            background: #218838;
+            background: #00e676;
+            transform: translateY(-2px);
         }
 
         .card-box {
-            background: #222228;
-            border-radius: 12px;
+            background: var(--card-bg);
+            border-radius: 16px;
             padding: 30px 20px;
             margin: 20px 0;
-            border: 2px dashed #444450;
-            min-height: 240px;
+            border: 2px dashed #363645;
+            min-height: 220px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
         }
 
-        .role-icon-display {
-            font-size: 64px;
-            margin-bottom: 10px;
-        }
-
         .role-title-display {
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 800;
-            color: #ffd700;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+            color: var(--accent-gold);
+            text-shadow: 0 0 15px rgba(255, 193, 7, 0.4);
+            letter-spacing: 1px;
         }
 
         .hidden {
             display: none !important;
+        }
+
+        h2#player-title {
+            letter-spacing: 0.5px;
+            font-weight: 600;
         }
     </style>
 </head>
@@ -174,12 +222,11 @@
 
     <!-- 2. ბარათების გადაცემის ეკრანი -->
     <div id="game-screen" class="hidden">
-        <h2 id="player-title" style="color: #ffffff; font-size: 22px;">მოთამაშე 1</h2>
+        <h2 id="player-title" style="color: #ffffff; font-size: 20px; margin-bottom: 5px;">მოთამაშე 1</h2>
         
         <div class="card-box">
             <button class="btn btn-primary" id="reveal-btn" onclick="revealRole()">როლის ნახვა</button>
             <div id="role-content" class="hidden">
-                <div class="role-icon-display" id="icon-display"></div>
                 <div class="role-title-display" id="role-display"></div>
             </div>
         </div>
@@ -189,35 +236,35 @@
 </div>
 
 <script>
-    // როლები თავისი სიმბოლოებით/ხატულებით
+    // მხოლოდ ტექსტური როლები
     const rolesData = [
-        { name: "დონი", icon: "🕶️", listLabel: "🕶️ დონი" },
-        { name: "მაფია", icon: "🕶️", listLabel: "🕶️ მაფია 1" },
-        { name: "მაფია", icon: "🕶️", listLabel: "🕶️ მაფია 2" },
-        { name: "იაკუძა", icon: "⚔️", listLabel: "⚔️ იაკუძა" },
-        { name: "შოგუნი", icon: "👑", listLabel: "👑 შოგუნი" },
-        { name: "დეტექტივი", icon: "🔍", listLabel: "🔍 დეტექტივი" },
-        { name: "ექიმი", icon: "✚", listLabel: "✚ ექიმი" },
-        { name: "მანიაკი", icon: "🔪", listLabel: "🔪 მანიაკი" },
-        { name: "მოქალაქე", icon: "❤️", listLabel: "❤️ მოქალაქე" },
-        { name: "მოქალაქე", icon: "❤️", listLabel: "❤️ მოქალაქე 1" },
-        { name: "მოქალაქე", icon: "❤️", listLabel: "❤️ მოქალაქე 2" },
-        { name: "მოქალაქე", icon: "❤️", listLabel: "❤️ მოქალაქე 3" },
-        { name: "მოქალაქე", icon: "❤️", listLabel: "❤️ მოქალაქე 4" },
-        { name: "მოქალაქე", icon: "❤️", listLabel: "❤️ მოქალაქე 5" }
+        { name: "დონი", listLabel: "დონი" },
+        { name: "მაფია", listLabel: "მაფია 1" },
+        { name: "მაფია", listLabel: "მაფია 2" },
+        { name: "იაკუძა", listLabel: "იაკუძა" },
+        { name: "შოგუნი", listLabel: "შოგუნი" },
+        { name: "დეტექტივი", listLabel: "დეტექტივი" },
+        { name: "ექიმი", listLabel: "ექიმი" },
+        { name: "მანიაკი", listLabel: "მანიაკი" },
+        { name: "მოქალაქე", listLabel: "მოქალაქე" },
+        { name: "მოქალაქე", listLabel: "მოქალაქე 1" },
+        { name: "მოქალაქე", listLabel: "მოქალაქე 2" },
+        { name: "მოქალაქე", listLabel: "მოქალაქე 3" },
+        { name: "მოქალაქე", listLabel: "მოქალაქე 4" },
+        { name: "მოქალაქე", listLabel: "მოქალაქე 5" }
     ];
 
     let assignedRoles = [];
     let currentIndex = 0;
 
-    // ჩექბოქსების აგება
+    // ჩექბოქსების გენერაცია სურათების გარეშე
     const listContainer = document.getElementById('roles-list');
     rolesData.forEach((roleObj, index) => {
         const label = document.createElement('label');
         label.className = 'role-option';
         label.innerHTML = `
             <input type="checkbox" value="${index}" onchange="updateCount()">
-            ${roleObj.listLabel}
+            <span class="role-label-text">${roleObj.listLabel}</span>
         `;
         listContainer.appendChild(label);
     });
@@ -233,7 +280,7 @@
         const checkedBoxes = document.querySelectorAll('#roles-list input[type="checkbox"]:checked');
         let selectedRoles = Array.from(checkedBoxes).map(cb => rolesData[cb.value]);
 
-        // არევა (Fisher-Yates)
+        // როლების არევა
         for (let i = selectedRoles.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [selectedRoles[i], selectedRoles[j]] = [selectedRoles[j], selectedRoles[i]];
@@ -258,7 +305,6 @@
     function revealRole() {
         const currentRole = assignedRoles[currentIndex];
         document.getElementById('role-display').innerText = currentRole.name;
-        document.getElementById('icon-display').innerText = currentRole.icon;
         
         document.getElementById('role-content').classList.remove('hidden');
         document.getElementById('reveal-btn').classList.add('hidden');
